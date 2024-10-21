@@ -1,0 +1,1869 @@
+{
+	"info": {
+		"_postman_id": "b3ea612b-62d5-4ce7-868c-217f8d29641e",
+		"name": "PDC - CRUD usuario",
+		"description": "# Colección de Postman para Pruebas de API\n\n<img src=\"https://img.shields.io/badge/API-Postman-blue\">\n\n---\n\n## Descripción\n\nEsta colección de Postman está diseñada para realizar pruebas exhaustivas de la API de gestión de usuarios del portal. Proporciona una serie de solicitudes que permiten crear, buscar, restablecer contraseñas y eliminar usuarios, además de gestionar la autenticación y otros aspectos clave de la API.\n\n## Estructura de la Colección\n\nLa colección está organizada en diferentes secciones, cada una con casos de éxito y de error para garantizar una cobertura completa de las pruebas:\n\n- **Autenticación**\n    \n- **Gestión de Usuarios**\n    \n    - **Crear Usuario**\n        \n    - **Buscar Usuario**\n        \n    - **Actualizar Contraseña**\n        \n    - **Eliminar Usuario**\n        \n\n## Cómo usar la colección\n\nSigue los siguientes pasos para utilizar la colección y realizar pruebas sobre la API:\n\n1. **Importar la colección y el environment:**\n    \n    - Importa la colección `COLLECTION_CRUD_API` y el entorno `ENV_API_CRUD` en Postman.\n        \n2. **Ejecutar las solicitudes:**\n    \n    - Selecciona las solicitudes dentro de la colección según lo que desees probar (creación, búsqueda, eliminación, etc.).\n        \n    - Verifica las respuestas devueltas para validar los diferentes escenarios.\n        \n\n## Requisitos\n\nPara ejecutar esta colección necesitas:\n\n- Postman instalado en tu máquina.\n    \n- Acceso a la API correspondiente con las credenciales o permisos adecuados.\n    \n- [http://a28e9d3596b5a4cddbd8ae2d2c0eb6ce-600686809.sa-east-1.elb.amazonaws.com](http://a28e9d3596b5a4cddbd8ae2d2c0eb6ce-600686809.sa-east-1.elb.amazonaws.com)\n    \n\n## Notas adicionales\n\n- Asegúrate de haber configurado correctamente las variables de entorno, como las URL de la API y los tokens de autenticación.\n    \n- Puedes modificar los casos de error para simular diferentes situaciones según sea necesario en tus pruebas.\n    \n\n---",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "20357304"
+	},
+	"item": [
+		{
+			"name": "Signup",
+			"item": [
+				{
+					"name": "Autenticación",
+					"item": [
+						{
+							"name": "Caso de Error",
+							"item": [
+								{
+									"name": "Iniciar Sesión - Contraseña incorrecta",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"// Verificar que el código de estado sea 401 \r",
+													"\r",
+													"pm.test(\"Status code is 401\", function () {\r",
+													"    pm.response.to.have.status(401);\r",
+													"});\r",
+													"\r",
+													"// Verificar que la respuesta no contiene contraseñas\r",
+													"\r",
+													"pm.test(\"Verificar que la respuesta no contiene contraseñas\", function () {\r",
+													"    const responseText = pm.response.text();\r",
+													"    pm.expect(responseText).to.not.include(\"password\");\r",
+													"});\r",
+													"\r",
+													"// Verificar que no se haya devuelto un token de acceso\r",
+													"pm.test(\"No access token is returned\", function () {\r",
+													"    const responseJson = pm.response.json();\r",
+													"    pm.expect(responseJson).to.not.have.property('access_token');\r",
+													"});\r",
+													"\r",
+													"// Verificar que la respuesta esté en formato JSON\r",
+													"pm.test(\"Response is in JSON format\", function () {\r",
+													"    pm.response.to.be.json;\r",
+													"});\r",
+													""
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{onb_backend_access_token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"username\": \"{{usuario_itti}}\",\r\n    \"password\": \"{{contraseña_comercio}}\"\r\n}\r\n",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{portal_url}}/users/login",
+											"host": [
+												"{{portal_url}}"
+											],
+											"path": [
+												"users",
+												"login"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Iniciar Sesión - Usuario no registrado",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"// Verificar que el código de estado sea 401 \r",
+													"\r",
+													"pm.test(\"Status code is 401\", function () {\r",
+													"    pm.response.to.have.status(401);\r",
+													"});\r",
+													"\r",
+													"// Verificar que la respuesta no contiene contraseñas\r",
+													"\r",
+													"pm.test(\"Verificar que la respuesta no contiene contraseñas\", function () {\r",
+													"    const responseText = pm.response.text();\r",
+													"    pm.expect(responseText).to.not.include(\"password\");\r",
+													"});\r",
+													"\r",
+													"// Verificar que no se haya devuelto un token de acceso\r",
+													"pm.test(\"No access token is returned\", function () {\r",
+													"    const responseJson = pm.response.json();\r",
+													"    pm.expect(responseJson).to.not.have.property('access_token');\r",
+													"});\r",
+													"\r",
+													"// Verificar que la respuesta esté en formato JSON\r",
+													"pm.test(\"Response is in JSON format\", function () {\r",
+													"    pm.response.to.be.json;\r",
+													"});\r",
+													""
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{onb_backend_access_token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"username\": \"miguelesquivel@gmail.com\",\r\n    \"password\": \"{{contraseña_comercio}}\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{portal_url}}/users/login",
+											"host": [
+												"{{portal_url}}"
+											],
+											"path": [
+												"users",
+												"login"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Iniciar Sesión - Campos vacios",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"// Verificar que el código de estado sea 400 Bad Request\r",
+													"\r",
+													"pm.test(\"Status code is 400\", function () {\r",
+													"    pm.response.to.have.status(400);\r",
+													"});\r",
+													"\r",
+													"// Verificar que no se haya devuelto un token de acceso\r",
+													"pm.test(\"No access token is returned\", function () {\r",
+													"    const responseJson = pm.response.json();\r",
+													"    pm.expect(responseJson).to.not.have.property('access_token');\r",
+													"});\r",
+													"\r",
+													"// Verificar que la respuesta esté en formato JSON\r",
+													"pm.test(\"Response is in JSON format\", function () {\r",
+													"    pm.response.to.be.json;\r",
+													"});\r",
+													""
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{onb_backend_access_token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"username\": \"\",\r\n    \"password\": \"\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{portal_url}}/users/login",
+											"host": [
+												"{{portal_url}}"
+											],
+											"path": [
+												"users",
+												"login"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Caso Exitoso",
+							"item": [
+								{
+									"name": "Iniciar Sesión - Credenciales válidas COMERCIO",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"// Verificar que el código de estado sea 200\r",
+													"\r",
+													"pm.test(\"Status code is 200\", function () {\r",
+													"    pm.response.to.have.status(200);\r",
+													"});\r",
+													"\r",
+													"// Verificar que la respuesta no contiene contraseñas\r",
+													"\r",
+													"pm.test(\"Verificar que la respuesta no contiene contraseñas\", function () {\r",
+													"    const responseText = pm.response.text();\r",
+													"    pm.expect(responseText).to.not.include(\"password\");\r",
+													"});\r",
+													"\r",
+													"// Verificar que la respuesta esté en formato JSON\r",
+													"pm.test(\"Response is in JSON format\", function () {\r",
+													"    pm.response.to.be.json;\r",
+													"});\r",
+													"\r",
+													"pm.globals.set(\"onb_backend_access_token\", pm.response.json().access_token);\r",
+													""
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{onb_backend_access_token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"username\": \"{{usuario_comercio}}\",\r\n    \"password\": \"{{contraseña_comercio}}\"\r\n}\r\n",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{portal_url}}/users/login",
+											"host": [
+												"{{portal_url}}"
+											],
+											"path": [
+												"users",
+												"login"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Iniciar Sesión - Credenciales válidas ITTI",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"// Verificar que el código de estado sea 200\r",
+													"\r",
+													"pm.test(\"Status code is 200\", function () {\r",
+													"    pm.response.to.have.status(200);\r",
+													"});\r",
+													"\r",
+													"// Verificar que la respuesta no contiene contraseñas\r",
+													"\r",
+													"pm.test(\"Verificar que la respuesta no contiene contraseñas\", function () {\r",
+													"    const responseText = pm.response.text();\r",
+													"    pm.expect(responseText).to.not.include(\"password\");\r",
+													"});\r",
+													"\r",
+													"// Verificar que la respuesta esté en formato JSON\r",
+													"pm.test(\"Response is in JSON format\", function () {\r",
+													"    pm.response.to.be.json;\r",
+													"});\r",
+													"\r",
+													"pm.globals.set(\"onb_backend_access_token\", pm.response.json().access_token);\r",
+													""
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{onb_backend_access_token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"username\": \"{{usuario_itti}}\",\r\n    \"password\": \"{{contraseña_itti}}\"\r\n}\r\n",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{portal_url}}/users/login",
+											"host": [
+												"{{portal_url}}"
+											],
+											"path": [
+												"users",
+												"login"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "Internal",
+			"item": [
+				{
+					"name": "Crear Usuario",
+					"item": [
+						{
+							"name": "Caso de Error",
+							"item": [
+								{
+									"name": "Crear Usuario - firstName no válido",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"// Verificar que el código de estado sea 400 \r",
+													"\r",
+													"pm.test(\"Status code is 400\", function () {\r",
+													"    pm.response.to.have.status(400);\r",
+													"});\r",
+													"\r",
+													"// Verificar que la respuesta no contiene contraseñas\r",
+													"\r",
+													"pm.test(\"Verificar que la respuesta no contiene contraseñas\", function () {\r",
+													"    const responseText = pm.response.text();\r",
+													"    pm.expect(responseText).to.not.include(\"password\");\r",
+													"});\r",
+													"\r",
+													"// Verificar que la respuesta esté en formato JSON\r",
+													"pm.test(\"Response is in JSON format\", function () {\r",
+													"    pm.response.to.be.json;\r",
+													"});\r",
+													"\r",
+													""
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{onb_backend_access_token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"firstName\": \"\",\r\n    \"lastName\": \"Esquivel\",\r\n    \"email\": \"carlosesquivelrios@gmail.com\",\r\n    \"phone\": \"+595984388144\",\r\n    \"merchantId\": \"a3dd0b79-f648-4c6c-8de9-1389c69b3a4b\",\r\n    \"role\": \"admin\",\r\n    \"birthDate\": \"1994-11-04\",\r\n    \"isMaster\": false\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{portal_url}}/internal/users",
+											"host": [
+												"{{portal_url}}"
+											],
+											"path": [
+												"internal",
+												"users"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Crear Usuario - lastName no válido",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"// Verificar que el código de estado sea 400 \r",
+													"\r",
+													"pm.test(\"Status code is 400\", function () {\r",
+													"    pm.response.to.have.status(400);\r",
+													"});\r",
+													"\r",
+													"// Verificar que la respuesta no contiene contraseñas\r",
+													"\r",
+													"pm.test(\"Verificar que la respuesta no contiene contraseñas\", function () {\r",
+													"    const responseText = pm.response.text();\r",
+													"    pm.expect(responseText).to.not.include(\"password\");\r",
+													"});\r",
+													"\r",
+													"// Verificar que la respuesta esté en formato JSON\r",
+													"pm.test(\"Response is in JSON format\", function () {\r",
+													"    pm.response.to.be.json;\r",
+													"});\r",
+													"\r",
+													""
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{onb_backend_access_token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"firstName\": \"Carlos\",\r\n    \"lastName\": \"\",\r\n    \"email\": \"carlosesquivelrios@gmail.com\",\r\n    \"phone\": \"+595984388144\",\r\n    \"merchantId\": \"a3dd0b79-f648-4c6c-8de9-1389c69b3a4b\",\r\n    \"role\": \"admin\",\r\n    \"birthDate\": \"1994-11-04\",\r\n    \"isMaster\": false\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{portal_url}}/internal/users",
+											"host": [
+												"{{portal_url}}"
+											],
+											"path": [
+												"internal",
+												"users"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Crear Usuario - email no válido",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"// Verificar que el código de estado sea 400 \r",
+													"\r",
+													"pm.test(\"Status code is 400\", function () {\r",
+													"    pm.response.to.have.status(400);\r",
+													"});\r",
+													"\r",
+													"// Verificar que la respuesta no contiene contraseñas\r",
+													"\r",
+													"pm.test(\"Verificar que la respuesta no contiene contraseñas\", function () {\r",
+													"    const responseText = pm.response.text();\r",
+													"    pm.expect(responseText).to.not.include(\"password\");\r",
+													"});\r",
+													"\r",
+													"// Verificar que la respuesta esté en formato JSON\r",
+													"pm.test(\"Response is in JSON format\", function () {\r",
+													"    pm.response.to.be.json;\r",
+													"});\r",
+													"\r",
+													""
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{onb_backend_access_token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"firstName\": \"Carlos\",\r\n    \"lastName\": \"Esquivel\",\r\n    \"email\": \"\",\r\n    \"phone\": \"+595984388144\",\r\n    \"merchantId\": \"a3dd0b79-f648-4c6c-8de9-1389c69b3a4b\",\r\n    \"role\": \"admin\",\r\n    \"birthDate\": \"1994-11-04\",\r\n    \"isMaster\": false\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{portal_url}}/internal/users",
+											"host": [
+												"{{portal_url}}"
+											],
+											"path": [
+												"internal",
+												"users"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Crear Usuario - phone no válido",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"// Verificar que el código de estado sea 400 \r",
+													"\r",
+													"pm.test(\"Status code is 400\", function () {\r",
+													"    pm.response.to.have.status(400);\r",
+													"});\r",
+													"\r",
+													"// Verificar que la respuesta no contiene contraseñas\r",
+													"\r",
+													"pm.test(\"Verificar que la respuesta no contiene contraseñas\", function () {\r",
+													"    const responseText = pm.response.text();\r",
+													"    pm.expect(responseText).to.not.include(\"password\");\r",
+													"});\r",
+													"\r",
+													"// Verificar que la respuesta esté en formato JSON\r",
+													"pm.test(\"Response is in JSON format\", function () {\r",
+													"    pm.response.to.be.json;\r",
+													"});\r",
+													"\r",
+													""
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{onb_backend_access_token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"firstName\": \"Carlos\",\r\n    \"lastName\": \"Esquivel\",\r\n    \"email\": \"carlosesquivelrios@gmail.com\",\r\n    \"phone\": \"\",\r\n    \"merchantId\": \"a3dd0b79-f648-4c6c-8de9-1389c69b3a4b\",\r\n    \"role\": \"admin\",\r\n    \"birthDate\": \"1994-11-04\",\r\n    \"isMaster\": false\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{portal_url}}/internal/users",
+											"host": [
+												"{{portal_url}}"
+											],
+											"path": [
+												"internal",
+												"users"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Crear Usuario - merchantId no válido",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"// Verificar que el código de estado sea 400 \r",
+													"\r",
+													"pm.test(\"Status code is 400\", function () {\r",
+													"    pm.response.to.have.status(400);\r",
+													"});\r",
+													"\r",
+													"// Verificar que la respuesta no contiene contraseñas\r",
+													"\r",
+													"pm.test(\"Verificar que la respuesta no contiene contraseñas\", function () {\r",
+													"    const responseText = pm.response.text();\r",
+													"    pm.expect(responseText).to.not.include(\"password\");\r",
+													"});\r",
+													"\r",
+													"// Verificar que la respuesta esté en formato JSON\r",
+													"pm.test(\"Response is in JSON format\", function () {\r",
+													"    pm.response.to.be.json;\r",
+													"});\r",
+													"\r",
+													""
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{onb_backend_access_token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"firstName\": \"Carlos\",\r\n    \"lastName\": \"Esquivel\",\r\n    \"email\": \"carlosesquivelrios@gmail.com\",\r\n    \"phone\": \"+595984388144\",\r\n    \"merchantId\": \"\",\r\n    \"role\": \"admin\",\r\n    \"birthDate\": \"1994-11-04\",\r\n    \"isMaster\": false\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{portal_url}}/internal/users",
+											"host": [
+												"{{portal_url}}"
+											],
+											"path": [
+												"internal",
+												"users"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Crear Usuario - role no válido",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"// Verificar que el código de estado sea 400 \r",
+													"\r",
+													"pm.test(\"Status code is 400\", function () {\r",
+													"    pm.response.to.have.status(400);\r",
+													"});\r",
+													"\r",
+													"// Verificar que la respuesta no contiene contraseñas\r",
+													"\r",
+													"pm.test(\"Verificar que la respuesta no contiene contraseñas\", function () {\r",
+													"    const responseText = pm.response.text();\r",
+													"    pm.expect(responseText).to.not.include(\"password\");\r",
+													"});\r",
+													"\r",
+													"// Verificar que la respuesta esté en formato JSON\r",
+													"pm.test(\"Response is in JSON format\", function () {\r",
+													"    pm.response.to.be.json;\r",
+													"});\r",
+													"\r",
+													""
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{onb_backend_access_token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"firstName\": \"Carlos\",\r\n    \"lastName\": \"Esquivel\",\r\n    \"email\": \"carlosesquivelrios@gmail.com\",\r\n    \"phone\": \"+595984388144\",\r\n    \"merchantId\": \"a3dd0b79-f648-4c6c-8de9-1389c69b3a4b\",\r\n    \"role\": \"\",\r\n    \"birthDate\": \"1994-11-04\",\r\n    \"isMaster\": false\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{portal_url}}/internal/users",
+											"host": [
+												"{{portal_url}}"
+											],
+											"path": [
+												"internal",
+												"users"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Crear Usuario - birthDate no válido",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"// Verificar que el código de estado sea 400 \r",
+													"\r",
+													"pm.test(\"Status code is 400\", function () {\r",
+													"    pm.response.to.have.status(400);\r",
+													"});\r",
+													"\r",
+													"// Verificar que la respuesta no contiene contraseñas\r",
+													"\r",
+													"pm.test(\"Verificar que la respuesta no contiene contraseñas\", function () {\r",
+													"    const responseText = pm.response.text();\r",
+													"    pm.expect(responseText).to.not.include(\"password\");\r",
+													"});\r",
+													"\r",
+													"// Verificar que la respuesta esté en formato JSON\r",
+													"pm.test(\"Response is in JSON format\", function () {\r",
+													"    pm.response.to.be.json;\r",
+													"});\r",
+													"\r",
+													""
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{onb_backend_access_token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"firstName\": \"Carlos\",\r\n    \"lastName\": \"Esquivel\",\r\n    \"email\": \"carlosesquivelrios@gmail.com\",\r\n    \"phone\": \"+595984388144\",\r\n    \"merchantId\": \"a3dd0b79-f648-4c6c-8de9-1389c69b3a4b\",\r\n    \"role\": \"admin\",\r\n    \"birthDate\": \"\",\r\n    \"isMaster\": false\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{portal_url}}/internal/users",
+											"host": [
+												"{{portal_url}}"
+											],
+											"path": [
+												"internal",
+												"users"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Crear Usuario - isMaster no válido",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"// Verificar que el código de estado sea 400 \r",
+													"\r",
+													"pm.test(\"Status code is 400\", function () {\r",
+													"    pm.response.to.have.status(400);\r",
+													"});\r",
+													"\r",
+													"// Verificar que la respuesta no contiene contraseñas\r",
+													"\r",
+													"pm.test(\"Verificar que la respuesta no contiene contraseñas\", function () {\r",
+													"    const responseText = pm.response.text();\r",
+													"    pm.expect(responseText).to.not.include(\"password\");\r",
+													"});\r",
+													"\r",
+													"// Verificar que la respuesta esté en formato JSON\r",
+													"pm.test(\"Response is in JSON format\", function () {\r",
+													"    pm.response.to.be.json;\r",
+													"});\r",
+													"\r",
+													""
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{onb_backend_access_token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"firstName\": \"Carlos\",\r\n    \"lastName\": \"Esquivel\",\r\n    \"email\": \"carlosesquivelrios@gmail.com\",\r\n    \"phone\": \"+595984388144\",\r\n    \"merchantId\": \"a3dd0b79-f648-4c6c-8de9-1389c69b3a4b\",\r\n    \"role\": \"admin\",\r\n    \"birthDate\": \"1994-11-04\",\r\n    \"isMaster\": \r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{portal_url}}/internal/users",
+											"host": [
+												"{{portal_url}}"
+											],
+											"path": [
+												"internal",
+												"users"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Crear Usuario - Formato de correo invalido",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"// Verificar que el código de estado sea 400 \r",
+													"\r",
+													"pm.test(\"Status code is 400\", function () {\r",
+													"    pm.response.to.have.status(400);\r",
+													"});\r",
+													"\r",
+													"// Verificar que la respuesta no contiene contraseñas\r",
+													"\r",
+													"pm.test(\"Verificar que la respuesta no contiene contraseñas\", function () {\r",
+													"    const responseText = pm.response.text();\r",
+													"    pm.expect(responseText).to.not.include(\"password\");\r",
+													"});\r",
+													"\r",
+													"// Verificar que la respuesta esté en formato JSON\r",
+													"pm.test(\"Response is in JSON format\", function () {\r",
+													"    pm.response.to.be.json;\r",
+													"});\r",
+													"\r",
+													"pm.test(\"el correo electrónico debe ser un correo electrónico\", function () {\r",
+													"    const responseJson = pm.response.json();  // Convertir la respuesta a JSON\r",
+													"    pm.expect(responseJson.message).to.eql(\"BadRequestException: email must be an email\");\r",
+													"});\r",
+													"\r",
+													""
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{onb_backend_access_token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"firstName\": \"Carlos\",\r\n    \"lastName\": \"Esquivel\",\r\n    \"email\": \"carlosesquivelriosgmail.com\",\r\n    \"phone\": \"+595984388144\",\r\n    \"merchantId\": \"a3dd0b79-f648-4c6c-8de9-1389c69b3a4b\",\r\n    \"role\": \"admin\",\r\n    \"birthDate\": \"1994-11-04\",\r\n    \"isMaster\": false\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{portal_url}}/internal/users",
+											"host": [
+												"{{portal_url}}"
+											],
+											"path": [
+												"internal",
+												"users"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Crear Usuario - Correo duplicado",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"// Verificar que el código de estado sea 400 \r",
+													"\r",
+													"pm.test(\"Status code is 400\", function () {\r",
+													"    pm.response.to.have.status(400);\r",
+													"});\r",
+													"\r",
+													"// Verificar que la respuesta no contiene contraseñas\r",
+													"\r",
+													"pm.test(\"Verificar que la respuesta no contiene contraseñas\", function () {\r",
+													"    const responseText = pm.response.text();\r",
+													"    pm.expect(responseText).to.not.include(\"password\");\r",
+													"});\r",
+													"\r",
+													"// Verificar que la respuesta esté en formato JSON\r",
+													"pm.test(\"Response is in JSON format\", function () {\r",
+													"    pm.response.to.be.json;\r",
+													"});\r",
+													"\r",
+													"pm.test(\"Correo electrónico duplicado\", function () {\r",
+													"    const responseJson = pm.response.json();  // Convertir la respuesta a JSON\r",
+													"    pm.expect(responseJson.message).to.eql(\"UserProviderExpectedError: User exists with same email\");\r",
+													"});\r",
+													"\r",
+													""
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{onb_backend_access_token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"firstName\": \"Carlos\",\r\n    \"lastName\": \"Esquivel\",\r\n    \"email\": \"miguel.esquivel@itti.digital\",\r\n    \"phone\": \"+595984388144\",\r\n    \"merchantId\": \"a3dd0b79-f648-4c6c-8de9-1389c69b3a4b\",\r\n    \"role\": \"admin\",\r\n    \"birthDate\": \"1994-11-04\",\r\n    \"isMaster\": false\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{portal_url}}/internal/users",
+											"host": [
+												"{{portal_url}}"
+											],
+											"path": [
+												"internal",
+												"users"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Caso Exitoso",
+							"item": [
+								{
+									"name": "Crear Usuario - Todos los campos válidos",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"// Verificar que el código de estado sea 201 \r",
+													"\r",
+													"pm.test(\"Status code is 201\", function () {\r",
+													"    pm.response.to.have.status(201);\r",
+													"});\r",
+													"\r",
+													"// Verificar que la respuesta no contiene contraseñas\r",
+													"\r",
+													"pm.test(\"Verificar que la respuesta no contiene contraseñas\", function () {\r",
+													"    const responseText = pm.response.text();\r",
+													"    pm.expect(responseText).to.not.include(\"password\");\r",
+													"});\r",
+													"\r",
+													"// Almacenar la respuesta directamente\r",
+													"const userId = pm.response.text(); // Obtener la respuesta como texto\r",
+													"\r",
+													"// Verificar que la respuesta no esté vacía y es un string alfanumérico\r",
+													"pm.test(\"User ID is not empty and is alphanumeric\", function () {\r",
+													"    pm.expect(userId).to.not.be.empty; // Asegúrate de que no esté vacío\r",
+													"    pm.expect(userId).to.match(/^[a-zA-Z0-9-]+$/); // Verificar que el formato es alfanumérico\r",
+													"});\r",
+													"\r",
+													"// Guardar el ID en una variable de entorno\r",
+													"pm.environment.set(\"user_id\", userId); // Guarda el ID en la variable de entorno 'user_id'\r",
+													"\r",
+													"// Opcional: Mostrar en la consola para verificar\r",
+													"console.log(\"User ID saved:\", userId);\r",
+													"\r",
+													""
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{onb_backend_access_token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"firstName\": \"Carlos\",\r\n    \"lastName\": \"Esquivel\",\r\n    \"email\": \"carlosesquivelrios@gmail.com\",\r\n    \"phone\": \"+595984388144\",\r\n    \"merchantId\": \"a3dd0b79-f648-4c6c-8de9-1389c69b3a4b\",\r\n    \"role\": \"admin\",\r\n    \"birthDate\": \"1994-11-04\",\r\n    \"isMaster\": false\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{portal_url}}/internal/users",
+											"host": [
+												"{{portal_url}}"
+											],
+											"path": [
+												"internal",
+												"users"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "Buscar Usuario",
+					"item": [
+						{
+							"name": "Caso de Error",
+							"item": [
+								{
+									"name": "Buscar Usuario - Inexistente",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"// Verificar que el código de estado sea 200 \r",
+													"\r",
+													"pm.test(\"Status code is 404\", function () {\r",
+													"    pm.response.to.have.status(404);\r",
+													"});\r",
+													"\r",
+													"// Verificar que la respuesta no contiene contraseñas\r",
+													"\r",
+													"pm.test(\"Verificar que la respuesta no contiene contraseñas\", function () {\r",
+													"    const responseText = pm.response.text();\r",
+													"    pm.expect(responseText).to.not.include(\"password\");\r",
+													"});\r",
+													"\r",
+													"// Verificar que la respuesta esté en formato JSON\r",
+													"pm.test(\"Response is in JSON format\", function () {\r",
+													"    pm.response.to.be.json;\r",
+													"});\r",
+													""
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{onb_backend_access_token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "{{portal_url}}/internal/users/51db331a-d3ff-4d8e-b5e6-b387850737",
+											"host": [
+												"{{portal_url}}"
+											],
+											"path": [
+												"internal",
+												"users",
+												"51db331a-d3ff-4d8e-b5e6-b387850737"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Caso Exitoso",
+							"item": [
+								{
+									"name": "Buscar Usuario - Por ID",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"// Verificar que el código de estado sea 200 \r",
+													"\r",
+													"pm.test(\"Status code is 200\", function () {\r",
+													"    pm.response.to.have.status(200);\r",
+													"});\r",
+													"\r",
+													"// Verificar que la respuesta no contiene contraseñas\r",
+													"\r",
+													"pm.test(\"Verificar que la respuesta no contiene contraseñas\", function () {\r",
+													"    const responseText = pm.response.text();\r",
+													"    pm.expect(responseText).to.not.include(\"password\");\r",
+													"});\r",
+													"\r",
+													"// Verificar que la respuesta esté en formato JSON\r",
+													"pm.test(\"Response is in JSON format\", function () {\r",
+													"    pm.response.to.be.json;\r",
+													"});\r",
+													""
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{onb_backend_access_token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "GET",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{portal_url}}/internal/users/{{user_id}}",
+											"host": [
+												"{{portal_url}}"
+											],
+											"path": [
+												"internal",
+												"users",
+												"{{user_id}}"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Buscar Usuario - Por EMAIL",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"// Verificar que el código de estado sea 200 \r",
+													"\r",
+													"pm.test(\"Status code is 200\", function () {\r",
+													"    pm.response.to.have.status(200);\r",
+													"});\r",
+													"\r",
+													"// Verificar que la respuesta no contiene contraseñas\r",
+													"\r",
+													"pm.test(\"Verificar que la respuesta no contiene contraseñas\", function () {\r",
+													"    const responseText = pm.response.text();\r",
+													"    pm.expect(responseText).to.not.include(\"password\");\r",
+													"});\r",
+													"\r",
+													"// Verificar que la respuesta esté en formato JSON\r",
+													"pm.test(\"Response is in JSON format\", function () {\r",
+													"    pm.response.to.be.json;\r",
+													"});\r",
+													""
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{onb_backend_access_token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "GET",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{portal_url}}/internal/users/email/carlosesquivelrios@gmail.com",
+											"host": [
+												"{{portal_url}}"
+											],
+											"path": [
+												"internal",
+												"users",
+												"email",
+												"carlosesquivelrios@gmail.com"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Buscar Usuario - Todos",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"// Verificar que el código de estado sea 200 \r",
+													"\r",
+													"pm.test(\"Status code is 200\", function () {\r",
+													"    pm.response.to.have.status(200);\r",
+													"});\r",
+													"\r",
+													"// Verificar que la respuesta no contiene contraseñas\r",
+													"\r",
+													"pm.test(\"Verificar que la respuesta no contiene contraseñas\", function () {\r",
+													"    const responseText = pm.response.text();\r",
+													"    pm.expect(responseText).to.not.include(\"password\");\r",
+													"});\r",
+													"\r",
+													"// Verificar que la respuesta esté en formato JSON\r",
+													"pm.test(\"Response is in JSON format\", function () {\r",
+													"    pm.response.to.be.json;\r",
+													"});\r",
+													""
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"protocolProfileBehavior": {
+										"disableBodyPruning": true
+									},
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{onb_backend_access_token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "GET",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{portal_url}}/internal/users?limit=1000",
+											"host": [
+												"{{portal_url}}"
+											],
+											"path": [
+												"internal",
+												"users"
+											],
+											"query": [
+												{
+													"key": "limit",
+													"value": "1000"
+												}
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "Contraseña Usuario",
+					"item": [
+						{
+							"name": "Caso de Error",
+							"item": [
+								{
+									"name": "Reseteo Usuario - Campo Vacio",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"// Verificar que el código de estado sea 400\r",
+													"\r",
+													"pm.test(\"Status code is 400\", function () {\r",
+													"    pm.response.to.have.status(400);\r",
+													"});\r",
+													"\r",
+													"pm.test(\"Contraseña vacía no permitida\", function () {\r",
+													"    const responseJson = pm.response.json();  // Convierte la respuesta a JSON\r",
+													"    pm.expect(responseJson.message).to.eql(\"UserProviderExpectedError: Empty password not allowed\");\r",
+													"});"
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{onb_backend_access_token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"password\": \"\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{portal_url}}/internal/users/{{user_id}}/set-new-password",
+											"host": [
+												"{{portal_url}}"
+											],
+											"path": [
+												"internal",
+												"users",
+												"{{user_id}}",
+												"set-new-password"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Reseteo Usuario - Reseteo Rechazado",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"// Verificar que el código de estado sea 200\r",
+													"\r",
+													"pm.test(\"Status code is 400\", function () {\r",
+													"    pm.response.to.have.status(400);\r",
+													"});\r",
+													"\r",
+													"pm.test(\"Usuario no encontrado\", function () {\r",
+													"    const responseJson = pm.response.json();  // Convierte la respuesta a JSON\r",
+													"    pm.expect(responseJson.message).to.eql(\"UserProviderExpectedError: User not found\");\r",
+													"});\r",
+													""
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{onb_backend_access_token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"password\": \"Hola.123456\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{portal_url}}/internal/users/8223854d-f8ab-4a58-a7c5-d2a65f7a448/set-new-password",
+											"host": [
+												"{{portal_url}}"
+											],
+											"path": [
+												"internal",
+												"users",
+												"8223854d-f8ab-4a58-a7c5-d2a65f7a448",
+												"set-new-password"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Caso Exitoso",
+							"item": [
+								{
+									"name": "Reseteo Usuario - Cambio Exitoso",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"// Verificar que el código de estado sea 200\r",
+													"\r",
+													"pm.test(\"Status code is 200\", function () {\r",
+													"    pm.response.to.have.status(200);\r",
+													"});"
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{onb_backend_access_token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"password\": \"Hola.123456\"\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{portal_url}}/internal/users/{{user_id}}/set-new-password",
+											"host": [
+												"{{portal_url}}"
+											],
+											"path": [
+												"internal",
+												"users",
+												"{{user_id}}",
+												"set-new-password"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						}
+					]
+				},
+				{
+					"name": "Eliminar Usuario",
+					"item": [
+						{
+							"name": "Caso de Error",
+							"item": [
+								{
+									"name": "Eliminar Usuario - Inexistente",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"// Verificar que el código de estado sea 404\r",
+													"\r",
+													"pm.test(\"Status code is 404\", function () {\r",
+													"    pm.response.to.have.status(404);\r",
+													"});\r",
+													"\r",
+													"pm.test(\"Check if error message indicates user not found by email\", function () {\r",
+													"    const responseJson = pm.response.json();  // Convierte la respuesta a JSON\r",
+													"    pm.expect(responseJson.message).to.eql(\"NotFoundException: InternalDeleteUserByEmail.execute - User not found with id=[carlosesquivelriosgmail.com]\");\r",
+													"});\r",
+													""
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{onb_backend_access_token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "{{portal_url}}/internal/users/email/carlosesquivelriosgmail.com",
+											"host": [
+												"{{portal_url}}"
+											],
+											"path": [
+												"internal",
+												"users",
+												"email",
+												"carlosesquivelriosgmail.com"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Caso Exitoso",
+							"item": [
+								{
+									"name": "Eliminar Usuario - Por Correo",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"// Verificar que el código de estado sea 200 \r",
+													"\r",
+													"pm.test(\"Status code is 200\", function () {\r",
+													"    pm.response.to.have.status(200);\r",
+													"});"
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{onb_backend_access_token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "{{portal_url}}/internal/users/email/carlosesquivelrios@gmail.com",
+											"host": [
+												"{{portal_url}}"
+											],
+											"path": [
+												"internal",
+												"users",
+												"email",
+												"carlosesquivelrios@gmail.com"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Creamos Usuario - Para Eliminar por ID",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"// Verificar que el código de estado sea 201 \r",
+													"\r",
+													"pm.test(\"Status code is 201\", function () {\r",
+													"    pm.response.to.have.status(201);\r",
+													"});\r",
+													"\r",
+													"// Verificar que la respuesta no contiene contraseñas\r",
+													"\r",
+													"pm.test(\"Verificar que la respuesta no contiene contraseñas\", function () {\r",
+													"    const responseText = pm.response.text();\r",
+													"    pm.expect(responseText).to.not.include(\"password\");\r",
+													"});\r",
+													"\r",
+													"// Almacenar la respuesta directamente\r",
+													"const userId = pm.response.text(); // Obtener la respuesta como texto\r",
+													"\r",
+													"// Verificar que la respuesta no esté vacía y es un string alfanumérico\r",
+													"pm.test(\"User ID is not empty and is alphanumeric\", function () {\r",
+													"    pm.expect(userId).to.not.be.empty; // Asegúrate de que no esté vacío\r",
+													"    pm.expect(userId).to.match(/^[a-zA-Z0-9-]+$/); // Verificar que el formato es alfanumérico\r",
+													"});\r",
+													"\r",
+													"// Guardar el ID en una variable de entorno\r",
+													"pm.environment.set(\"user_id\", userId); // Guarda el ID en la variable de entorno 'user_id'\r",
+													"\r",
+													"// Opcional: Mostrar en la consola para verificar\r",
+													"console.log(\"User ID saved:\", userId);\r",
+													"\r",
+													""
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{onb_backend_access_token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\r\n    \"firstName\": \"Carlos\",\r\n    \"lastName\": \"Esquivel\",\r\n    \"email\": \"carlosesquivelrios@gmail.com\",\r\n    \"phone\": \"+595984388144\",\r\n    \"merchantId\": \"a3dd0b79-f648-4c6c-8de9-1389c69b3a4b\",\r\n    \"role\": \"admin\",\r\n    \"birthDate\": \"1994-11-04\",\r\n    \"isMaster\": false\r\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "{{portal_url}}/internal/users",
+											"host": [
+												"{{portal_url}}"
+											],
+											"path": [
+												"internal",
+												"users"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Eliminar Usuario - Por ID",
+									"event": [
+										{
+											"listen": "test",
+											"script": {
+												"exec": [
+													"// Verificar que el código de estado sea 200 \r",
+													"\r",
+													"pm.test(\"Status code is 200\", function () {\r",
+													"    pm.response.to.have.status(200);\r",
+													"});"
+												],
+												"type": "text/javascript",
+												"packages": {}
+											}
+										}
+									],
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "{{onb_backend_access_token}}",
+													"type": "string"
+												}
+											]
+										},
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "{{portal_url}}/internal/users/email/carlosesquivelrios@gmail.com",
+											"host": [
+												"{{portal_url}}"
+											],
+											"path": [
+												"internal",
+												"users",
+												"email",
+												"carlosesquivelrios@gmail.com"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}
