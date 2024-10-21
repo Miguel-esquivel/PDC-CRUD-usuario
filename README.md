@@ -1,33 +1,33 @@
 
-# Colección de Postman para Pruebas de API
+# 🧰 Colección de Postman para Pruebas de API
 
-### Descripción
+### 📝 Descripción
 
 Esta colección de Postman está diseñada para realizar pruebas exhaustivas de la **API de gestión de usuarios** del portal. Proporciona una serie de solicitudes que permiten:
 
-- Crear usuarios
-- Buscar usuarios
-- Restablecer contraseñas
-- Eliminar usuarios
+- 👤 Crear usuarios
+- 🔍 Buscar usuarios
+- 🔒 Restablecer contraseñas
+- 🗑️ Eliminar usuarios
 
 También incluye funcionalidades para gestionar la **autenticación** y otros aspectos clave de la API.
 
 ---
 
-### Estructura de la Colección
+### 🗂️ Estructura de la Colección
 
 La colección está organizada en diferentes secciones, cada una con casos de éxito y error, para garantizar una cobertura completa en las pruebas:
 
-1. **Autenticación**
-2. **Gestión de Usuarios**
-   - Crear Usuario
-   - Buscar Usuario
-   - Actualizar Contraseña
-   - Eliminar Usuario
+1. 🔐 **Autenticación**
+2. 👥 **Gestión de Usuarios**
+   - ➕ Crear Usuario
+   - 🔎 Buscar Usuario
+   - 🔄 Actualizar Contraseña
+   - ❌ Eliminar Usuario
 
 ---
 
-### Cómo Usar la Colección
+### 🚀 Cómo Usar la Colección
 
 Sigue los siguientes pasos para realizar pruebas sobre la API:
 
@@ -40,20 +40,20 @@ Sigue los siguientes pasos para realizar pruebas sobre la API:
 
 ---
 
-### Requisitos
+### ✅ Requisitos
 
 Para ejecutar esta colección necesitas:
 
-- Postman instalado en tu máquina.
-- Acceso a la API correspondiente con las credenciales o permisos adecuados.
+- 🛠️ Postman instalado en tu máquina.
+- 🔑 Acceso a la API correspondiente con las credenciales o permisos adecuados.
 
-API URL: [API Management](http://a28e9d3596b5a4cddbd8ae2d2c0eb6ce-600686809.sa-east-1.elb.amazonaws.com)
+🌐 **API URL**: [API Management](http://a28e9d3596b5a4cddbd8ae2d2c0eb6ce-600686809.sa-east-1.elb.amazonaws.com)
 
 ---
 
-### Notas Adicionales
+### 📝 Notas Adicionales
 
-- Asegúrate de haber configurado correctamente las **variables de entorno**, como las URL de la API y los **tokens de autenticación**.
+- Asegúrate de haber configurado correctamente las **variables de entorno** 🌍, como las URL de la API y los **tokens de autenticación** 🔑.
 - Puedes modificar los casos de error para simular diferentes situaciones según sea necesario en tus pruebas.
 
 ---
