@@ -7,7 +7,7 @@ Esta colección de Postman está diseñada para realizar pruebas exhaustivas de 
 
 - 👤 Crear usuarios
 - 🔍 Buscar usuarios
-- 🔒 Restablecer contraseñas
+- 🔒 Cambiar contraseña
 - 🗑️ Eliminar usuarios
 
 También incluye funcionalidades para gestionar la **autenticación** y otros aspectos clave de la API.
